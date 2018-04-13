@@ -1,0 +1,24 @@
+// ffcell - find full cell
+// find full cell and carry to researchCenter without cell
+extern void object::ffcell_to_rc()
+{
+  object items[] = radarall(PowerCell);
+  for(int i = 0; i < sizeof(items); i = i + 1)
+  {
+    if(items[i].energyLevel == 1)
+    {
+      goto(items[i].position, 20, 0, 1);
+      wait(0.5);
+      goto(items[i].position);
+
+      grab();
+      
+      item = radar(ResearchCenter);
+      goto(items[i].position, 20, 0, 1);
+      wait(0.5);
+      goto(items[i].position);
+      drop();
+      move(-10);
+    }
+  }
+}

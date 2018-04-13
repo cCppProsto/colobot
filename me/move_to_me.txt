@@ -1,0 +1,8 @@
+extern void object::move_to_me()
+{
+  object t = radar(Me);
+  goto(t.position, 20, 0, 1);
+  wait(0.5);
+  goto(t.position);
+
+}

@@ -1,0 +1,55 @@
+// ffcell - find full cell
+// TrSh   - TrackedShooter
+// find full cell and carry to TrackedShooter without cell
+extern void object::ffcell_to_TrSh()
+{
+  if(energyCell.energyLevel < 0.3)
+  {
+    recharge();
+  }
+  
+  object items[] = radarall(PowerCell);
+  for(int i = 0; i < sizeof(items); i = i + 1)
+  {
+    if(items[i].energyLevel == 1)
+    {
+      goto(items[i].position, 20, 0, 1);
+      wait(0.5);
+      goto(items[i].position);
+
+      grab();
+      
+      items = radarall(TrackedShooter);
+      for(int i = 0; i < sizeof(items); i = i + 1)
+      {
+        if(items[i].energyCell == null)
+        {
+          goto(items[i].position, 20, 0, 1);
+          wait(0.5);
+          goto(items[i].position);
+          
+          drop();
+          move(-10);
+          return;
+        }
+      }
+      return;
+    }
+  }
+}
+
+void object::recharge()
+{
+  object item;
+
+  item = radar(PowerStation);
+  goto(item.position, 20, 0, 1);
+  wait(0.5);
+  goto(item.position);
+
+  while ( energyCell.energyLevel < 1 )
+  {
+    wait(1);
+  }
+}
+

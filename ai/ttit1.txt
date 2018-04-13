@@ -1,0 +1,12 @@
+extern void object::Example()
+{
+	
+	move(20);
+	grab();
+	
+	turn(180);
+	move(30);
+	drop();
+	move(-3);
+	
+}

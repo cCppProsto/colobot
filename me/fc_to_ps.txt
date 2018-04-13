@@ -1,0 +1,54 @@
+// ffcell - find full cell
+// find full cell and carry to researchCenter without cell
+
+// http://colobot.info/SatComOnline/master/cbot/category
+// fc - find cell
+// ps - power station
+// find titanium and carry to red flag
+extern void object::fc_to_ps()
+{
+  object t;
+  
+  if(energyCell.energyLevel < 0.3)
+  {
+    recharge();
+  }
+  
+  t = radar(PowerCell, 0, 360, 0, 1000, -1);
+
+  if( distance(position, t.position) < 50)
+  {
+    message("PowerCell not found");
+    return;
+  }
+
+  goto(t.position, 20, 0, 1);
+  wait(0.5);
+  goto(t.position);
+
+
+  grab();
+
+  t = radar(PowerStation);
+
+  goto(t.position, 20, 0, 1);
+  wait(0.5);
+  goto(t.position);
+}
+
+void object::recharge()
+{
+  object item;
+
+  item = radar(PowerStation);
+
+  goto(item.position, 20, 0, 1);
+  wait(0.5);
+  goto(item.position);
+
+  while ( energyCell.energyLevel < 1 )
+  {
+    wait(1);
+  }
+}
+

@@ -1,0 +1,19 @@
+// ft - find titanium
+// find titanium and carry to me
+extern void object::ft_to_me()
+{
+  object t = radar(Titanium, 0, 360, 0, 1000, -1);
+  
+  goto(t.position, 20, 0, 1);
+  wait(0.5);
+  goto(t.position);
+  
+  grab();
+  t = radar(Me);
+  goto(t.position, 20, 0, 1);
+  wait(0.5);
+  goto(t.position);
+
+  drop();
+}
+

@@ -1,0 +1,51 @@
+// http://colobot.info/SatComOnline/master/cbot/category
+// ft - find titanium
+// find titanium and carry to red flag
+extern void object::ft_to_rf()
+{
+	  object t;
+	
+	  if(energyCell.energyLevel < 0.3)
+	  {
+		    recharge();
+		  }
+	
+	  t = radar(Titanium, 0, 360, 0, 1000, -1);
+	
+	  if( distance(position, t.position) < 20)
+	  {
+		    message("Titanium not found");
+		    return;
+		  }
+	
+	  goto(t.position, 20, 0, 1);
+	  wait(0.5);
+	  goto(t.position);
+	  grab();
+	
+	  t = radar(RedFlag);
+	
+	  goto(t.position, 20, 0, 1);
+	  wait(0.5);
+	  goto(t.position);
+	
+	  drop();
+}
+
+void object::recharge()
+{
+	  object item;
+	
+	  item = radar(PowerStation);
+	  goto(item.position, 20, 0, 1);
+	  wait(0.5);
+	  goto(item.position);
+	
+	  while ( energyCell.energyLevel < 1 )
+	  {
+		      wait(1);
+		  }
+}
+
+
+
