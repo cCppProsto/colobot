@@ -1,7 +1,9 @@
 // http://colobot.info/SatComOnline/master/cbot/category
-// gt - grab titanium
-// grab nearest titanium and carry to red flag
-extern void object::gt_to_rf()
+// find titanium
+// carry to factory
+// drop
+// start creating WingedShooter
+extern void object::ft_to_f_cr_WiSh()
 {
 	errmode(0);
 	
@@ -12,15 +14,27 @@ extern void object::gt_to_rf()
 		recharge();
 	}
 	
-	t = radar(Titanium);
+	t = radar(Titanium, 0, 360, 0, 1000);
+	
+	if( t == null)
+	{
+		message("Titanium not found");
+		return;
+	}
 	
 	move_to(t);
+	
 	grab();
 	
-	t = radar(RedFlag);
+	t = radar(BotFactory);
 	
 	move_to(t);
+	
 	drop();
+	
+	move(-10);
+	
+	t.factory(WingedShooter);
 }
 
 void object::recharge()

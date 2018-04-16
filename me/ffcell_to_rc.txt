@@ -2,23 +2,33 @@
 // find full cell and carry to researchCenter without cell
 extern void object::ffcell_to_rc()
 {
-  object items[] = radarall(PowerCell);
-  for(int i = 0; i < sizeof(items); i = i + 1)
-  {
-    if(items[i].energyLevel == 1)
-    {
-      goto(items[i].position, 20, 0, 1);
-      wait(0.5);
-      goto(items[i].position);
+	errmode(0);
+	
+	object items[] = radarall(PowerCell);
+	for(int i = 0; i < sizeof(items); i = i + 1)
+	{
+		if(items[i].energyLevel == 1)
+		{
+			move_to(items[i]);
+			grab();
+			
+			object item;
+			item = radar(ResearchCenter);
+			
+			move_to(item);
+			drop();
+			move(-10);
+		}
+	}
+}
 
-      grab();
-      
-      item = radar(ResearchCenter);
-      goto(items[i].position, 20, 0, 1);
-      wait(0.5);
-      goto(items[i].position);
-      drop();
-      move(-10);
-    }
-  }
+void object::move_to(object o)
+{
+	int errcode  = 0;
+	errcode = goto(o.position);
+	
+	while(errcode != 0)
+	{
+		errcode = goto(o.position, 20, 0, 1);
+	}
 }

@@ -3,48 +3,56 @@
 // find titanium and carry to red flag
 extern void object::ft_to_rf()
 {
-	  object t;
+	errmode(0);
 	
-	  if(energyCell.energyLevel < 0.3)
-	  {
-		    recharge();
-		  }
+	object t;
 	
-	  t = radar(Titanium, 0, 360, 0, 1000, -1);
+	if(energyCell.energyLevel < 0.3)
+	{
+		recharge();
+	}
 	
-	  if( distance(position, t.position) < 20)
-	  {
-		    message("Titanium not found");
-		    return;
-		  }
+	t = radar(Titanium, 0, 360, 0, 1000, -1);
 	
-	  goto(t.position, 20, 0, 1);
-	  wait(0.5);
-	  goto(t.position);
-	  grab();
+	if( distance(position, t.position) < 20)
+	{
+		message("Titanium not found");
+		return;
+	}
 	
-	  t = radar(RedFlag);
+	move_to(t);
 	
-	  goto(t.position, 20, 0, 1);
-	  wait(0.5);
-	  goto(t.position);
+	grab();
 	
-	  drop();
+	t = radar(RedFlag);
+	
+	move_to(t);
+	
+	drop();
+}
+
+void object::move_to(object o)
+{
+	int errcode  = 0;
+	errcode = goto(o.position);
+	
+	while(errcode != 0)
+	{
+		errcode = goto(o.position, 20, 0, 1);
+	}
 }
 
 void object::recharge()
 {
-	  object item;
+	object item;
 	
-	  item = radar(PowerStation);
-	  goto(item.position, 20, 0, 1);
-	  wait(0.5);
-	  goto(item.position);
+	item = radar(PowerStation);
+	move_to(item);
 	
-	  while ( energyCell.energyLevel < 1 )
-	  {
-		      wait(1);
-		  }
+	while ( energyCell.energyLevel < 1 )
+	{
+		wait(1);
+	}
 }
 
 

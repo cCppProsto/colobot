@@ -1,19 +1,19 @@
 // ffcell - find full cell
-// TrSh   - TrackedShooter
-// find full cell and carry to TrackedShooter without cell
-extern void object::ffcell_to_TrSh()
+// WiSh   - WingedShooter
+// find full cell and carry to WingedShooter without cell
+extern void object::ffcell_to_WiSh()
 {
 	if(energyCell.energyLevel < 0.3)
 	{
 		recharge();
 	}
 	
-	object shooters[] = radarall(TrackedShooter);
+	object grabbers[] = radarall(WingedShooter);
 	object cells[]    = radarall(PowerCell);
 	
-	for(int i = 0; i < sizeof(shooters); i = i + 1)
+	for(int i = 0; i < sizeof(grabbers); i = i + 1)
 	{
-		if(shooters[i].energyCell == null)
+		if(grabbers[i].energyCell == null)
 		{
 			for(int j = 0; j < sizeof(cells); j = j + 1)
 			{
@@ -22,12 +22,13 @@ extern void object::ffcell_to_TrSh()
 					move_to(cells[j]);
 					grab();
 					
-					move_to(shooters[i]);
+					move_to(grabbers[i]);
 					drop();
 					move(-20);
 					return;
 				}
 			}
+			
 		}
 	}
 }

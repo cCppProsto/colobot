@@ -1,8 +1,18 @@
 extern void object::move_to_me()
 {
-  object t = radar(Me);
-  goto(t.position, 20, 0, 1);
-  wait(0.5);
-  goto(t.position);
+	errmode(0);
+	
+	object t = radar(Me);
+	move_to(t);
+}
 
+void object::move_to(object o)
+{
+	int errcode  = 0;
+	errcode = goto(o.position);
+	
+	while(errcode != 0)
+	{
+		errcode = goto(o.position, 20, 0, 1);
+	}
 }

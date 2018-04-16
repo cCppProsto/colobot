@@ -2,18 +2,23 @@
 // find titanium and carry to me
 extern void object::ft_to_me()
 {
-  object t = radar(Titanium, 0, 360, 0, 1000, -1);
-  
-  goto(t.position, 20, 0, 1);
-  wait(0.5);
-  goto(t.position);
-  
-  grab();
-  t = radar(Me);
-  goto(t.position, 20, 0, 1);
-  wait(0.5);
-  goto(t.position);
+	object t = radar(Titanium, 0, 360, 0, 1000, -1);
 
-  drop();
+	move_to(t);
+	grab();
+
+	t = radar(Me);
+	move_to(t);
+	drop();
 }
 
+void object::move_to(object o)
+{
+	int errcode  = 0;
+	errcode = goto(o.position);
+	
+	while(errcode != 0)
+	{
+		errcode = goto(o.position, 20, 0, 1);
+	}
+}

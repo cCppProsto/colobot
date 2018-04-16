@@ -1,54 +1,54 @@
-// ffcell - find full cell
-// find full cell and carry to researchCenter without cell
-
 // http://colobot.info/SatComOnline/master/cbot/category
 // fc - find cell
 // ps - power station
-// find titanium and carry to red flag
+// find not full cell and carry to powerstation
 extern void object::fc_to_ps()
 {
-  object t;
-  
-  if(energyCell.energyLevel < 0.3)
-  {
-    recharge();
-  }
-  
-  t = radar(PowerCell, 0, 360, 0, 1000, -1);
+	errmode(0);
+	object t;
+	
+	if(energyCell.energyLevel < 0.3)
+	{
+		recharge();
+	}
+	
+	object cells[] = radarall(PowerCell);
+	for(int i = 0; i < sizeof(cells); i = i + 1)
+	{
+		if(cells[i].energyLevel < 1)
+		{
+			move_to(cells[i]);
+			grab();
+			
+			t = radar(PowerStation);
+			move_to(t);
+			return;
+		}
+	}
+}
 
-  if( distance(position, t.position) < 50)
-  {
-    message("PowerCell not found");
-    return;
-  }
-
-  goto(t.position, 20, 0, 1);
-  wait(0.5);
-  goto(t.position);
-
-
-  grab();
-
-  t = radar(PowerStation);
-
-  goto(t.position, 20, 0, 1);
-  wait(0.5);
-  goto(t.position);
+void object::move_to(object o)
+{
+	int errcode  = 0;
+	errcode = goto(o.position);
+	
+	while(errcode != 0)
+	{
+		errcode = goto(o.position, 20, 0, 1);
+	}
 }
 
 void object::recharge()
 {
-  object item;
-
-  item = radar(PowerStation);
-
-  goto(item.position, 20, 0, 1);
-  wait(0.5);
-  goto(item.position);
-
-  while ( energyCell.energyLevel < 1 )
-  {
-    wait(1);
-  }
+	object item;
+	
+	item = radar(PowerStation);
+	
+	move_to(item);
+	
+	while ( energyCell.energyLevel < 1 )
+	{
+		wait(1);
+	}
 }
 
